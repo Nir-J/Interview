@@ -21,3 +21,4 @@ x ^= x >> 2
 x ^= x >> 1
 x &= 0x1
 ```
+4. Isolate *i*-th bit: `(x >> i) & 1`. OR . Create bit mask for *i*-th bit: `(1 << i)`
