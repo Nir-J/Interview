@@ -44,7 +44,7 @@ class Solution:
 Voila moments:
 - Last constraint mentions Prefix/Suffix. Useful when calculating range products.
 - Presence of zero messes up the whole thing
-- Zero resets progress. So can split the array on where zeros are present.
+- Zero resets progress. So can split the array on where zeros are present. Didn't figure this out till lots of failure, hence changed main function to helper
 
 ### [242. Valid Anagram](https://leetcode.com/problems/valid-anagram/)
 ```python
