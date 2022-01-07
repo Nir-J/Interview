@@ -37,10 +37,33 @@ class Solution:
         return res
 
 ```
+> Complexity: O(N), N= Length of nums
+
 Voila moments:
 - Last constraint mentions Prefix/Suffix. Useful when calculating range products.
 - Presence of zero messes up the whole thing
 - Zero resets progress. So can split the array on where zeros are present.
+
+### [242. Valid Anagram](https://leetcode.com/problems/valid-anagram/)
+```python
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        
+        def count(word):
+            ctr = [0]*26
+            for w in word:
+                ctr[ord(w)-ord('a')] += 1
+            return "".join([str(x) for x in ctr])
+        
+        return count(s) == count(t)
+```
+> - Complexity: O(N)
+> - N = Max len of string
+
+
+Voila moments:
+- Anagrams will have the same counter array
+
 
 ### [49. Group Anagrams](https://leetcode.com/problems/group-anagrams/)
 
@@ -68,6 +91,11 @@ class Solution:
         return res
 
 ```
+> - Complexity: O(N*M)
+> - N = Number of strings, 
+> - M = Max len of string
+
+
 Voila moments:
 - Anagrams will have the same counter array
 - Just group based on counter arrays.
