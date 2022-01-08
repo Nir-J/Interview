@@ -135,6 +135,48 @@ Voila moments:
 - Edge case: Current end is smaller than previous end, in that case don't update.
 - If current start is more than previous end, we insert a new interval
 
+### [435. Non-overlapping Intervals](https://leetcode.com/problems/non-overlapping-intervals/)
+
+```python
+class Solution:
+    def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
+        intervals.sort(key=lambda x: x[0])
+        
+        last = 0
+        cur = 1
+        cnt = 0
+        while cur < len(intervals):
+            a = intervals[last]
+            b = intervals[cur]
+            if a[1] > b[0]:
+                cnt += 1
+                if a[1] > b[1]:
+                    last = cur
+                    cur += 1
+                else:
+                    cur += 1
+            else:
+                last = cur
+                cur += 1
+        return cnt
+        
+```
+> - Time complexity: O(N), N = Number of intervals
+> - Space complexity: O(1)
+
+What didn't work: 
+- Tried recursive way to try out all possible exclusions.
+- Sort intervals. When two intervals overlap, we have to decide which to exclude. So two possible recursive branches.
+- Add memoization to this, just keeping track of current valid and last valid interval. (55/58 test cases)
+- Tried to add binary search to find next best interval we can pick. This adds complexity in code to calculate how many intervals we have to exclude in between.
+- Worked for some, failed majority.
+
+Voila moments:
+- When two intervals overlap, we can choose which to exclude based on greedy method.
+- Sort intervals based on start time. When two overlap, check which has the larger end interval and exclude that. As this interval will obviously overlap with more intervals.
+- If intervals don't overlap, we just move on assigning last valid to current, and current to current + 1.
+
+
 ### [230. Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
 
 ```python
