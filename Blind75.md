@@ -134,3 +134,31 @@ Voila moments:
 - Update the previous end if the current start lies within it.
 - Edge case: Current end is smaller than previous end, in that case don't update.
 - If current start is more than previous end, we insert a new interval
+
+### [230. Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
+
+```python
+class Solution:
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        
+        kth = None
+        ctr = 1
+        def inorder(node):
+            nonlocal kth, ctr
+            if not node:
+                return
+            inorder(node.left)
+            if ctr == k:
+                kth = node.val
+            ctr += 1
+            inorder(node.right)
+        inorder(root)
+        return kth
+```
+> - Time complexity: O(N), N = number of elements
+> - Space Complexity: O(N) (Recursion Stack)
+
+Voila Moments
+- It's a BST! (Already sorted)
+- Inorder traversal gives order.
+- Just need to keep track of how many numbers we have already come across. Used global variables for this.
