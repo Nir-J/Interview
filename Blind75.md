@@ -39,7 +39,8 @@ class Solution:
         return res
 
 ```
-> Complexity: O(N), N= Length of nums
+> - Time Complexity: O(N), N = Length of nums
+> - Space Complexity: O(N) (Prefix suffix arrays) 
 
 Voila moments:
 - Last constraint mentions Prefix/Suffix. Useful when calculating range products.
@@ -59,8 +60,8 @@ class Solution:
         
         return count(s) == count(t)
 ```
-> - Complexity: O(N)
-> - N = Max len of string
+> - Time Complexity: O(N), N = Max len of string
+> - Space Complexity: O(1) (Counter array is fixed)
 
 
 Voila moments:
@@ -93,11 +94,43 @@ class Solution:
         return res
 
 ```
-> - Complexity: O(N*M)
-> - N = Number of strings, 
-> - M = Max len of string
+> - Time Complexity: O(N*M), N = Number of strings, M = Max len of string
+> - Space Complexity: O(N).. or maybe both
 
 
 Voila moments:
 - Anagrams will have the same counter array
 - Just group based on counter arrays.
+
+### [56. Merge Intervals](https://leetcode.com/problems/merge-intervals/)
+
+```python
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        intervals = sorted(intervals, key=lambda x: x[0])
+        last_end = intervals[0][1]
+        last_start = intervals[0][0]
+        res = []
+        res.append(intervals[0])
+        for start, end in intervals[1:]:
+            last_start = start
+            if end <= last_end:
+                pass
+            elif start <= last_end:
+                res[-1][1] = end
+                last_end = end
+            else:
+                res.append([start,end])
+                last_end = end
+        return res
+
+```
+> - Time Complexity: O(N), N = Number of intervals
+> - Space Complexity: O(N) (New intervals list)
+
+
+Voila moments:
+- Need to sort intervals by start time. Then start comparing adjacent intervals. Need a new list
+- Update the previous end if the current start lies within it.
+- Edge case: Current end is smaller than previous end, in that case don't update.
+- If current start is more than previous end, we insert a new interval
