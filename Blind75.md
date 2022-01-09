@@ -177,6 +177,86 @@ Voila moments:
 - If intervals don't overlap, we just move on assigning last valid to current, and current to current + 1.
 
 
+### [143. Reorder List](https://leetcode.com/problems/reorder-list/)
+```python
+class Solution:
+    def reorderList(self, head: Optional[ListNode]) -> None:
+        """
+        Do not return anything, modify head in-place instead.
+        """
+        
+        stack = []
+        cur = head
+        length = 0
+        while cur:
+            stack.append(cur)
+            cur = cur.next
+            length += 1
+        cur = head
+        i = 1
+        while i+1 < length:
+            i += 1
+            length -= 1
+            after = cur.next
+            new = stack[-1]
+            stack.pop()
+            new.next = after
+            cur.next = new
+            cur = after
+            stack[-1].next = None
+        return head
+            
+```
+> - Time complexity: O(N), N = length of list
+> - Space complexity: O(N), (Stack)
+
+Voila moments:
+- Deciding when to stop is important.
+- If the node we need to get from end to insert is same as our current end node, we need to stop.
+- Change all next pointers appropriately. Changing end node's next to None is easy due to stack.
+
+Optimization:
+- Can optimize space
+- Find out midpoint of list by slow and fast pointers.
+- Reverse second half of list. Merge two lists.
+
+```python
+class Solution:
+    def reorderList(self, head: Optional[ListNode]) -> None:
+        """
+        Do not return anything, modify head in-place instead.
+        """
+        def reverse(node):
+            prev = None
+            cur = node
+            while cur:
+                after = cur.next
+                cur.next = prev
+                prev = cur
+                cur = after
+            return prev
+        
+        slow = head
+        fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        
+        h2 = reverse(slow.next)
+        slow.next = None
+        h1 = head
+        
+        while h1 and h2:
+            after1 = h1.next
+            after2 = h2.next
+            h1.next = h2
+            h2.next = after1
+            h1 = after1
+            h2 = after2
+        return head
+```
+
+
 ### [230. Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
 
 ```python
