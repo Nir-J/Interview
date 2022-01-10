@@ -293,14 +293,14 @@ class Solution:
         find(root)
         return lowest
 ```
-> Time complexity: O(N), Searching all nodes
-> Space Complexity: O(N), tree might be just one branch
+> - Time complexity: O(N), Searching all nodes
+> - Space Complexity: O(N), tree might be just one branch
 
 Initial thoughts:
 - Tried to make the function return bool if one of the values is found. Becomes hard to manage if both nodes are present in the same branch.
 
 Voila moments:
-- Returned 1 if found. If current value is 2, both are found and this is the lowest.
+- Returned 1 if p or q is found. If current value is 2, both are found and this is the lowest.
 
 What I missed:
 - Its a BST. So can focus search instead of searching the whole tree. 
