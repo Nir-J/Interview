@@ -272,6 +272,53 @@ class Solution:
 Voila moments:
 - Simple dfs
 
+### [235. Lowest Common Ancestor of a Binary Search Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
+
+```python
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        
+        lowest = None
+        def find(node):
+            nonlocal lowest
+            if not node:
+                return 0
+            res = 0
+            if node.val == p.val or node.val == q.val:
+                res = 1
+            res += (find(node.left) + find(node.right))
+            if not lowest and res == 2:
+                lowest = node
+            return res
+        find(root)
+        return lowest
+```
+> Time complexity: O(N), Searching all nodes
+> Space Complexity: O(N), tree might be just one branch
+
+Initial thoughts:
+- Tried to make the function return bool if one of the values is found. Becomes hard to manage if both nodes are present in the same branch.
+
+Voila moments:
+- Returned 1 if found. If current value is 2, both are found and this is the lowest.
+
+What I missed:
+- Its a BST. So can focus search instead of searching the whole tree. 
+- Keep going till p and q are in different branches, or we reach either p or q, thats our lowest.
+
+```python
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        if p.val < root.val and q.val < root.val:
+            return self.lowestCommonAncestor(root.left, p, q)
+        elif p.val > root.val and q.val > root.val:
+            return self.lowestCommonAncestor(root.right, p, q)
+        else:
+            return root
+```
+> - Time complexity: O(N)
+> - Space complexity: O(N). O(1) if done iteratively.
+
 ### [230. Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
 
 ```python
