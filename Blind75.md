@@ -284,3 +284,36 @@ Voila Moments
 - It's a BST! (Already sorted)
 - Inorder traversal gives order.
 - Just need to keep track of how many numbers we have already come across. Used global variables for this.
+
+### [128. Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
+
+```python
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        
+        s = set(nums)
+        done = {}
+        
+        def find(n):
+            if n not in s:
+                return 0
+            if n in done:
+                return done[n]
+            done[n] = 1 + find(n+1)
+            return done[n]
+            
+        maxx = 0
+        for n in nums:
+            maxx = max(maxx, find(n))
+        return maxx
+```
+> - Time complexity: O(N)
+> - Space complexity: O(N) (set, dict)
+
+First thoughts:
+- Questions required O(N) so can't sort. Tried to use dict by storing whatever I see, and updating entries as I saw neighbors. This won't be optimal as it would keep on updating multiple entries.
+
+Voila moments:
+- Question says nothing about space complexity. Create a set of whole list. Now we know if something is present or not in O(1)
+- Have a done dict (memory) which is longest sequence possible from current number. Recursively fill it. Keep track of max.
+- Alt: No need of dict. Do not search if N-1 is present in the list. Only start sequence from lowest number. That way we only count once.
