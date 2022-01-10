@@ -256,7 +256,7 @@ class Solution:
         return head
 ```
 
-###[104. Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
+### [104. Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
 
 ```python
 class Solution:
