@@ -256,6 +256,21 @@ class Solution:
         return head
 ```
 
+###[104. Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
+
+```python
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        
+        if root == None:
+            return 0
+        return 1 + max(self.maxDepth(root.left),self.maxDepth(root.right))
+```
+> - Time complexity: O(N), N = number of nodes
+> - Space complexity: O(N), Max depth of stack (Not logN as its not a balanced tree)
+
+Voila moments:
+- Simple dfs
 
 ### [230. Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
 
