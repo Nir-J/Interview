@@ -1,4 +1,5 @@
 # [Blind 75](https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-75-LeetCode-Questions-to-Save-Your-Time-OaM1orEU)
+## Array
 
 ### [152. Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)
 ```python
@@ -47,60 +48,45 @@ Voila moments:
 - Presence of zero messes up the whole thing
 - Zero resets progress. So can split the array on where zeros are present. Didn't figure this out till lots of failure, hence changed main function to helper
 
-### [242. Valid Anagram](https://leetcode.com/problems/valid-anagram/)
-```python
-class Solution:
-    def isAnagram(self, s: str, t: str) -> bool:
-        
-        def count(word):
-            ctr = [0]*26
-            for w in word:
-                ctr[ord(w)-ord('a')] += 1
-            return "".join([str(x) for x in ctr])
-        
-        return count(s) == count(t)
-```
-> - Time Complexity: O(N), N = Max len of string
-> - Space Complexity: O(1) (Counter array is fixed)
 
+## Binary
+## Dynamic Programming
+## Graph
 
-Voila moments:
-- Anagrams will have the same counter array
-
-
-### [49. Group Anagrams](https://leetcode.com/problems/group-anagrams/)
+### [128. Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
 
 ```python
 class Solution:
-    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+    def longestConsecutive(self, nums: List[int]) -> int:
         
-        def get_cnt_str(word):
-            cnt = [0]*26
-            for w in word:
-                asci = ord(w)-ord('a')
-                cnt[asci] += 1
-            return "|".join([str(x) for x in cnt])
+        s = set(nums)
+        done = {}
         
-        groups = {}
-        for word in strs:
-            key = get_cnt_str(word)
-            if key not in groups:
-                groups[key] = []
-            groups[key].append(word)
-        
-        res = []
-        for _, group in groups.items():
-            res.append(group)
-        return res
-
+        def find(n):
+            if n not in s:
+                return 0
+            if n in done:
+                return done[n]
+            done[n] = 1 + find(n+1)
+            return done[n]
+            
+        maxx = 0
+        for n in nums:
+            maxx = max(maxx, find(n))
+        return maxx
 ```
-> - Time Complexity: O(N*M), N = Number of strings, M = Max len of string
-> - Space Complexity: O(N).. or maybe both
+> - Time complexity: O(N)
+> - Space complexity: O(N) (set, dict)
 
+First thoughts:
+- Questions required O(N) so can't sort. Tried to use dict by storing whatever I see, and updating entries as I saw neighbors. This won't be optimal as it would keep on updating multiple entries.
 
 Voila moments:
-- Anagrams will have the same counter array
-- Just group based on counter arrays.
+- Question says nothing about space complexity. Create a set of whole list. Now we know if something is present or not in O(1)
+- Have a done dict (memory) which is longest sequence possible from current number. Recursively fill it. Keep track of max.
+- Alt: No need of dict. Do not search if N-1 is present in the list. Only start sequence from lowest number. That way we only count once.
+
+## Interval
 
 ### [56. Merge Intervals](https://leetcode.com/problems/merge-intervals/)
 
@@ -176,6 +162,9 @@ Voila moments:
 - Sort intervals based on start time. When two overlap, check which has the larger end interval and exclude that. As this interval will obviously overlap with more intervals.
 - If intervals don't overlap, we just move on assigning last valid to current, and current to current + 1.
 
+
+
+## Linked List
 
 ### [143. Reorder List](https://leetcode.com/problems/reorder-list/)
 ```python
@@ -256,6 +245,68 @@ class Solution:
         return head
 ```
 
+
+## Matrix
+## String
+
+### [242. Valid Anagram](https://leetcode.com/problems/valid-anagram/)
+```python
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        
+        def count(word):
+            ctr = [0]*26
+            for w in word:
+                ctr[ord(w)-ord('a')] += 1
+            return "".join([str(x) for x in ctr])
+        
+        return count(s) == count(t)
+```
+> - Time Complexity: O(N), N = Max len of string
+> - Space Complexity: O(1) (Counter array is fixed)
+
+
+Voila moments:
+- Anagrams will have the same counter array
+
+
+### [49. Group Anagrams](https://leetcode.com/problems/group-anagrams/)
+
+```python
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        
+        def get_cnt_str(word):
+            cnt = [0]*26
+            for w in word:
+                asci = ord(w)-ord('a')
+                cnt[asci] += 1
+            return "|".join([str(x) for x in cnt])
+        
+        groups = {}
+        for word in strs:
+            key = get_cnt_str(word)
+            if key not in groups:
+                groups[key] = []
+            groups[key].append(word)
+        
+        res = []
+        for _, group in groups.items():
+            res.append(group)
+        return res
+
+```
+> - Time Complexity: O(N*M), N = Number of strings, M = Max len of string
+> - Space Complexity: O(N).. or maybe both
+
+
+Voila moments:
+- Anagrams will have the same counter array
+- Just group based on counter arrays.
+
+
+## Tree
+
 ### [104. Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
 
 ```python
@@ -271,6 +322,37 @@ class Solution:
 
 Voila moments:
 - Simple dfs
+
+
+### [230. Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
+
+```python
+class Solution:
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        
+        kth = None
+        ctr = 1
+        def inorder(node):
+            nonlocal kth, ctr
+            if not node:
+                return
+            inorder(node.left)
+            if ctr == k:
+                kth = node.val
+            ctr += 1
+            inorder(node.right)
+        inorder(root)
+        return kth
+```
+> - Time complexity: O(N), N = number of elements
+> - Space Complexity: O(N) (Recursion Stack)
+
+Voila Moments
+- It's a BST! (Already sorted)
+- Inorder traversal gives order.
+- Just need to keep track of how many numbers we have already come across. Used global variables for this.
+
+
 
 ### [235. Lowest Common Ancestor of a Binary Search Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
 
@@ -319,63 +401,6 @@ class Solution:
 > - Time complexity: O(N)
 > - Space complexity: O(N). O(1) if done iteratively.
 
-### [230. Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
 
-```python
-class Solution:
-    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
-        
-        kth = None
-        ctr = 1
-        def inorder(node):
-            nonlocal kth, ctr
-            if not node:
-                return
-            inorder(node.left)
-            if ctr == k:
-                kth = node.val
-            ctr += 1
-            inorder(node.right)
-        inorder(root)
-        return kth
-```
-> - Time complexity: O(N), N = number of elements
-> - Space Complexity: O(N) (Recursion Stack)
 
-Voila Moments
-- It's a BST! (Already sorted)
-- Inorder traversal gives order.
-- Just need to keep track of how many numbers we have already come across. Used global variables for this.
-
-### [128. Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
-
-```python
-class Solution:
-    def longestConsecutive(self, nums: List[int]) -> int:
-        
-        s = set(nums)
-        done = {}
-        
-        def find(n):
-            if n not in s:
-                return 0
-            if n in done:
-                return done[n]
-            done[n] = 1 + find(n+1)
-            return done[n]
-            
-        maxx = 0
-        for n in nums:
-            maxx = max(maxx, find(n))
-        return maxx
-```
-> - Time complexity: O(N)
-> - Space complexity: O(N) (set, dict)
-
-First thoughts:
-- Questions required O(N) so can't sort. Tried to use dict by storing whatever I see, and updating entries as I saw neighbors. This won't be optimal as it would keep on updating multiple entries.
-
-Voila moments:
-- Question says nothing about space complexity. Create a set of whole list. Now we know if something is present or not in O(1)
-- Have a done dict (memory) which is longest sequence possible from current number. Recursively fill it. Keep track of max.
-- Alt: No need of dict. Do not search if N-1 is present in the list. Only start sequence from lowest number. That way we only count once.
+## Heap
