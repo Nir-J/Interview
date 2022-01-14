@@ -51,6 +51,46 @@ Voila moments:
 
 ## Binary
 ## Dynamic Programming
+
+### [322. Coin Change](https://leetcode.com/problems/coin-change/)
+
+```python
+import math
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        
+        coins.sort()
+        memo = {}
+        def count(amount, i):
+            if amount == 0:
+                return 0
+            if amount < 0 or i >= len(coins):
+                return math.inf
+            key = (amount, i)
+            if key not in memo:
+                memo[key] = min(1 + count(amount-coins[i], i), count(amount,i+1))
+            return memo[key]
+        res = count(amount, 0)
+        if res == math.inf:
+            return -1
+        return res
+```
+> - Time complextiy: O(N * amount), N = number of coins
+> - Space complexity: O(N * amount), 2D Memoization
+
+Voila moments:
+- Standard recursion. Think of moving through coins one by one, at each stage you can either take coin and stay there or move on to next coin.
+- That gives us the recursive expression. Save everything in a memo to not recalculate repeated subproblems.
+
+Improvements:
+- Space complexity can be improved as we do not need to remember everything. But this needs a change for recursive logic.
+- We cannot just move through the coins. We need to move through all coins for a specific amount. (For loop all coins for each amount)
+- That way we only need to save memo for every amount. `O(amount)`
+
+```python
+
+```
+
 ## Graph
 
 ### [128. Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
